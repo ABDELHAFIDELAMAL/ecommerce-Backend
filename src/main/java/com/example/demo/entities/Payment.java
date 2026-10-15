@@ -11,16 +11,41 @@ import java.time.LocalDateTime;
 @Table(name = "payments")
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
-@ToString
+@Setter
 @Builder
+@ToString
 public class Payment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
-    private BigDecimal amount ;
-    private String method ;
-    private PaymentStatus status ;
-    private LocalDateTime paymentDate ;
+    private Long id;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal amount;
+
+    @Column(nullable = false)
+    private String method;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentStatus status;
+
+    @Column(nullable = false)
+    private LocalDateTime paymentDate;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "order_id",
+            nullable = false,
+            unique = true
+    )
+    private Order order;
+
+    @PrePersist
+    protected void onCreate() {
+        if (paymentDate == null) {
+            paymentDate = LocalDateTime.now();
+        }
+    }
 }

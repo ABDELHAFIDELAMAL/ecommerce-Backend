@@ -7,12 +7,31 @@ import lombok.*;
 @Table(name = "addresses")
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
-@ToString
+@Setter
 @Builder
+@ToString
 public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
+    private Long id;
+
+    @Column(nullable = false)
+    private String street;
+
+    @Column(nullable = false)
+    private String city;
+
+    @Column(nullable = false)
+    private String postalCode;
+
+    @Column(nullable = false)
+    private String country;
+
+    private String phone;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

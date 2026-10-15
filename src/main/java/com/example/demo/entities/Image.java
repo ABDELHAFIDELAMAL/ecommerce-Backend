@@ -19,5 +19,5 @@ public class Image {
     private String altText ;
 
     @ManyToOne
-    private Product product ;
+    private Product product;
 }

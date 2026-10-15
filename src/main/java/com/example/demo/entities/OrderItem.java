@@ -19,4 +19,7 @@ public class OrderItem {
     private Long id ;
     private Integer quantity ;
     private BigDecimal unitPrice ;
+
+    @ManyToOne
+    private Product product ;
 }

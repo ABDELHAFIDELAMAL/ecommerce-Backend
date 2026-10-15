@@ -1,6 +1,5 @@
 package com.example.demo.entities;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,34 +11,65 @@ import java.util.List;
 @Table(name = "products")
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter @Getter @ToString
+@Getter
+@Setter
 @Builder
+@ToString(exclude = {"category", "images", "orderItems", "reviews"})
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
-    private String name ;
-    private BigDecimal price ;
-    private Integer quantity = 0 ;
-    private String description ;
-    private Integer reviewsCount = 0 ;
-    private BigDecimal averageRating ;
-    private Boolean active ;
+    private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Category category ;
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer quantity = 0;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer reviewsCount = 0;
+
+    @Column(precision = 3, scale = 2)
+    private BigDecimal averageRating;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean active = true;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
 
     @OneToMany(
-            mappedBy = "product" ,
-            cascade = CascadeType.ALL ,
+            mappedBy = "product",
+            cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @Builder.Default
     private List<Image> images = new ArrayList<>();
 
-    @OneToMany
+
+    @OneToMany(mappedBy = "product")
+    @Builder.Default
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToMany
-    private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "product",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @Builder.Default
+    private List<Review> reviews = new ArrayList<>();
 }

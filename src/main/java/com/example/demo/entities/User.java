@@ -11,25 +11,40 @@ import java.util.List;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
-@ToString
-@Builder
+@Setter
+@Builder @ToString
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
-    private String fullName ;
-    private String email ;
-    private String password ;
-    private Role role ;
+    private Long id;
 
-    @OneToOne
-    private Cart cart ;
+    @Column(nullable = false)
+    private String fullName;
 
-    @OneToMany
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Cart cart;
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
     private List<Order> orders = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
     private List<Review> reviews = new ArrayList<>();
 }
