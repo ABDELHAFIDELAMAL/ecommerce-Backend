@@ -120,7 +120,7 @@ public class ProductController {
     }
 
    @PutMapping(path = "/update/quantity")
-    public ResponseEntity<ApiResponse> updateQuantity(Long productId, Integer quantity) throws NotFoundException {
+    public ResponseEntity<ApiResponse> updateQuantity(@PathVariable Long productId,@RequestParam Integer quantity) throws NotFoundException {
        try{
            productService.updateQuantity(productId , quantity);
            return ResponseEntity.ok(new ApiResponse("Update product quantity successfully" , null , true ));
@@ -131,7 +131,7 @@ public class ProductController {
     }
 
     @PostMapping(path = "/add/image/{productId}")
-    public ResponseEntity<ApiResponse> addProductImage(Long productId, Image image) throws NotFoundException {
+    public ResponseEntity<ApiResponse> addProductImage(@PathVariable Long productId,@RequestBody Image image) throws NotFoundException {
         try{
             var data = productService.addProductImage(productId , image);
             return ResponseEntity.ok(new ApiResponse("Image added to product successfully" , data , true ));
@@ -143,7 +143,7 @@ public class ProductController {
 
 
     @DeleteMapping(path = "/{productId}/delete/image/{imageId}")
-    public ResponseEntity<ApiResponse> removeProductImage(Long productId, Long imageId) throws NotFoundException {
+    public ResponseEntity<ApiResponse> removeProductImage(@PathVariable Long productId,@PathVariable Long imageId) throws NotFoundException {
         try{
             var data = productService.removeProductImage(productId , imageId);
             return ResponseEntity.ok(new ApiResponse("Image Product deleted successfully" , data , true ));
@@ -154,7 +154,7 @@ public class ProductController {
     }
 
     @GetMapping(path = "/reviews/{productId}")
-    public ResponseEntity<ApiResponse> getProductReviews(Long productId) throws NotFoundException {
+    public ResponseEntity<ApiResponse> getProductReviews(@PathVariable Long productId) throws NotFoundException {
         try{
             var data = productService.getProductReviews(productId );
             return ResponseEntity.ok(new ApiResponse("Product reviews fetched successfully" , data , true ));
