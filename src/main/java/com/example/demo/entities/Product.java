@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@ToString(exclude = {"category", "images", "orderItems", "reviews"})
+@ToString
 public class Product {
 
     @Id
@@ -35,6 +35,8 @@ public class Product {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    private String brand ;
 
     @Column(nullable = false)
     @Builder.Default

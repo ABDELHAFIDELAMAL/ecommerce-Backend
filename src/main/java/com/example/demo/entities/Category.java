@@ -30,4 +30,7 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @Builder.Default
     private List<Product> products = new ArrayList<>();
+
+    public Category(String name) {
+    }
 }

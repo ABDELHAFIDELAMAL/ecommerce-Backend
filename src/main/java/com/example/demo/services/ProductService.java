@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -37,6 +38,10 @@ public class ProductService implements IProductService{
                 throw new AlReadyExistException("Product already exit !!");
             }
         }
+        Category category = (Category) Optional.ofNullable(categoryRepository.findByName(product.getCategory().getName()))
+                .orElseGet(() -> categoryRepository.save(new Category(product.getCategory().getName())));
+
+        product.setCategory(category);
         return productRepository.save(product);
     }
 
@@ -56,6 +61,7 @@ public class ProductService implements IProductService{
         newProduct.setDescription(product.getDescription());
         newProduct.setQuantity(product.getQuantity());
         newProduct.setActive(product.getActive());
+        newProduct.setBrand(product.getBrand());
         newProduct.setImages(product.getImages());
         newProduct.setReviews(product.getReviews());
         newProduct.setAverageRating(product.getAverageRating());
