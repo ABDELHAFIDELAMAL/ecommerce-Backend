@@ -11,11 +11,9 @@ import com.example.demo.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -33,15 +31,22 @@ public class ProductService implements IProductService{
 
     @Override
     public Product createProduct(Product product) throws AlReadyExistException {
-        for(Product p : productRepository.findAll()){
-            if(Objects.equals(product.getName(), p.getName()) && product.getCategory().equals(p.getCategory())){
-                throw new AlReadyExistException("Product already exit !!");
-            }
-        }
-        Category category = (Category) Optional.ofNullable(categoryRepository.findByName(product.getCategory().getName()))
-                .orElseGet(() -> categoryRepository.save(new Category(product.getCategory().getName())));
+
+        Category category = categoryRepository
+                .findByName(product.getCategory().getName())
+                .orElseGet(() -> categoryRepository.save(
+                        new Category(product.getCategory().getName())
+                ));
 
         product.setCategory(category);
+
+        for (Product p : productRepository.findAll()) {
+            if (Objects.equals(product.getName(), p.getName())
+                    && Objects.equals(product.getCategory().getId(), p.getCategory().getId())) {
+                throw new AlReadyExistException("Product already exists !!");
+            }
+        }
+
         return productRepository.save(product);
     }
 
@@ -85,7 +90,8 @@ public class ProductService implements IProductService{
         for(Product product : productRepository.findAll()){
            if(product.getName().toLowerCase().contains(text.toLowerCase()) ||
                    product.getDescription().toLowerCase().contains(text.toLowerCase()) ||
-                   product.getPrice().toString().contains(text.toLowerCase())
+                   product.getPrice().toString().contains(text.toLowerCase()) ||
+                   product.getBrand().toLowerCase().contains(text.toLowerCase())
            ){
                resultsProducts.add(product);
            }

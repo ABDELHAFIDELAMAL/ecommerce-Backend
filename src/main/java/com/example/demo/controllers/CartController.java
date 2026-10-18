@@ -11,6 +11,4 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("*")
 public class CartController {
 
-    @Autowired
-    private ICartService cartService ;
 }

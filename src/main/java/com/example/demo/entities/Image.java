@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,11 +19,12 @@ public class Image {
     private Long id;
 
     @Column(nullable = false)
-    private String url;
-
+    private String imageUrl;
+    private String fileName ;
     private String altText;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
+    @JsonIgnore
     private Product product;
 }
