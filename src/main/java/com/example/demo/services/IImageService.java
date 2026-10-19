@@ -12,5 +12,5 @@ public interface IImageService {
     Image getImageById(Long imageId) throws NotFoundException;
     Image uploadImage(MultipartFile file , Long productId , String altText) throws IOException, NotFoundException;
     void deleteImage(Long imageId) throws NotFoundException;
-    List<Image> getImagesByProduct(Long productId);
+    Image getImagesByProduct(Long productId);
 }

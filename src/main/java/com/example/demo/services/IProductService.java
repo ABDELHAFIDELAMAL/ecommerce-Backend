@@ -20,7 +20,5 @@ public interface IProductService {
     List<Product> getAvailableProducts();
     List<Product> getTopRatedProducts();
     void updateQuantity(Long productId , Integer quantity) throws NotFoundException;
-    Product addProductImage(Long productId , Image image) throws NotFoundException;
-    Product removeProductImage(Long productId , Long imageId) throws NotFoundException;
     List<Review> getProductReviews(Long productId) throws NotFoundException;
 }

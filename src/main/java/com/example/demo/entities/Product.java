@@ -62,7 +62,7 @@ public class Product {
             orphanRemoval = true
     )
     @Builder.Default
-    private List<Image> images = new ArrayList<>();
+    private List<Image>images = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "product")

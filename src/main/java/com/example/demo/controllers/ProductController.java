@@ -153,31 +153,6 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/add/image/{productId}")
-    public ResponseEntity<ApiResponse> addProductImage(@PathVariable Long productId, @RequestBody Image image) {
-        try {
-            var data = productService.addProductImage(productId, image);
-            return ResponseEntity.ok(
-                    new ApiResponse("Image added to product successfully", data, true)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse(e.getMessage(), null, false));
-        }
-    }
-
-    @DeleteMapping("/{productId}/delete/image/{imageId}")
-    public ResponseEntity<ApiResponse> removeProductImage(@PathVariable Long productId, @PathVariable Long imageId) {
-        try {
-            var data = productService.removeProductImage(productId, imageId);
-            return ResponseEntity.ok(
-                    new ApiResponse("Product image deleted successfully", data, true)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse(e.getMessage(), null, false));
-        }
-    }
 
     @GetMapping("/reviews/{productId}")
     public ResponseEntity<ApiResponse> getProductReviews(@PathVariable Long productId) {

@@ -7,6 +7,7 @@ import com.example.demo.entities.Review;
 import com.example.demo.exceptions.AlReadyExistException;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.repositories.CategoryRepository;
+import com.example.demo.repositories.ImageRepository;
 import com.example.demo.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class ProductService implements IProductService{
     private ProductRepository productRepository ;
     @Autowired
     private CategoryRepository categoryRepository ;
+    @Autowired
+    private ImageRepository imageRepository ;
 
     @Override
     public List<Product> getAllProducts() {
@@ -84,9 +87,7 @@ public class ProductService implements IProductService{
 
     @Override
     public List<Product> searchProducts(String text) {
-
         List<Product> resultsProducts = new ArrayList<>();
-
         for(Product product : productRepository.findAll()){
            if(product.getName().toLowerCase().contains(text.toLowerCase()) ||
                    product.getDescription().toLowerCase().contains(text.toLowerCase()) ||
@@ -133,24 +134,6 @@ public class ProductService implements IProductService{
                 .orElseThrow(() -> new NotFoundException("Product not found with id : " + productId));
         product.setQuantity(quantity);
         productRepository.save(product);
-    }
-
-    @Override
-    public Product addProductImage(Long productId, Image image) throws NotFoundException {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException("Product not found with id : " + productId));
-        product.getImages().add(image);
-        productRepository.save(product);
-        return product;
-    }
-
-    @Override
-    public Product removeProductImage(Long productId, Long imageId) throws NotFoundException {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException("Product not found with id : " + productId));
-        product.getImages().remove(imageId);
-        productRepository.save(product);
-        return product ;
     }
 
     @Override

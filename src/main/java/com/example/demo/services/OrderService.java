@@ -10,10 +10,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class OrderService implements IOrderService{
+public class OrderService implements IOrderService {
 
     @Autowired
-    private OrderRepository orderRepository ;
+    private OrderRepository orderRepository;
+
     @Override
     public Order createOrder(Order order) {
         return orderRepository.save(order);
@@ -26,7 +27,10 @@ public class OrderService implements IOrderService{
 
     @Override
     public Order getOrderById(Long orderId) {
-        return null;
+        return orderRepository.findById(orderId)
+                .orElseThrow(() ->
+                        new RuntimeException("Order not found with id: " + orderId)
+                );
     }
 
     @Override
@@ -36,26 +40,42 @@ public class OrderService implements IOrderService{
 
     @Override
     public Order updateOrderStatus(Long orderId) {
-        return null;
+        Order order = getOrderById(orderId);
+        order.setStatus(OrderStatus.CONFIRMED);
+        return orderRepository.save(order);
     }
 
     @Override
     public void cancelOrder(Long orderId) {
-
+        Order order = getOrderById(orderId);
+        order.setStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
     }
 
     @Override
-    public BigDecimal calculateOrderTotal(Long oderId) {
-        return null;
+    public BigDecimal calculateOrderTotal(Long orderId) {
+        Order order = getOrderById(orderId);
+
+        if (order.getOrderItems() == null) {
+            return BigDecimal.ZERO;
+        }
+
+        return order.getOrderItems()
+                .stream()
+                .map(item ->
+                        item.getUnitPrice()
+                                .multiply(BigDecimal.valueOf(item.getQuantity()))
+                )
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public List<Order> getOrdersByStatus(OrderStatus orderStatus) {
-        return List.of();
+        return orderRepository.findByStatus(orderStatus);
     }
 
     @Override
     public List<Order> getOrdersByUser(Long userId) {
-        return List.of();
+        return orderRepository.findByUserId(userId);
     }
 }

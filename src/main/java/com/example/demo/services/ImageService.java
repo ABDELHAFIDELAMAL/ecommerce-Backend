@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,7 +80,7 @@ public class ImageService implements IImageService{
         Image image = new Image() ;
         image.setFileName(fileName);
         image.setAltText(altText);
-        image.setImageUrl("/api/v1/images" + fileName + "/file");
+        image.setImageUrl("/api/v1/images" + fileName );
         image.setProduct(product);
 
         return imageRepository.save(image);
@@ -95,8 +96,8 @@ public class ImageService implements IImageService{
     }
 
     @Override
-    public List<Image> getImagesByProduct(Long productId) {
-        return imageRepository.findByProductId(productId);
+    public Image getImagesByProduct(Long productId) {
+        return (Image) Collections.singletonList(imageRepository.findById(productId).orElseThrow(() -> new RuntimeException("Eror")));
     }
 
 

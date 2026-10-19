@@ -1,14 +1,16 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entities.Image;
 import com.example.demo.response.ApiResponse;
 import com.example.demo.services.IImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/images")
@@ -42,5 +44,11 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse(e.getMessage(), null, false));
         }
+    }
+
+
+    @GetMapping("/{id}")
+    public Image getImageById(@PathVariable Long id) {
+        return imageService.getImagesByProduct(id);
     }
 }
