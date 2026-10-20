@@ -80,7 +80,7 @@ public class ImageService implements IImageService{
         Image image = new Image() ;
         image.setFileName(fileName);
         image.setAltText(altText);
-        image.setImageUrl("/api/v1/images" + fileName );
+        image.setImageUrl("/images/" + fileName);
         image.setProduct(product);
 
         return imageRepository.save(image);
