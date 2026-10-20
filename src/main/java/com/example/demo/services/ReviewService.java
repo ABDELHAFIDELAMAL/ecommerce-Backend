@@ -37,7 +37,7 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Double getAverageRating() {
         List<Review> reviews = reviewRepository.findAll();
         if (reviews.isEmpty()) {

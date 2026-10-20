@@ -47,8 +47,16 @@ public class ImageController {
     }
 
 
-    @GetMapping("/{id}")
-    public Image getImageById(@PathVariable Long id) {
-        return imageService.getImagesByProduct(id);
+    @GetMapping("/{imageId}")
+    public ResponseEntity<ApiResponse> getImageById(@PathVariable Long imageId) {
+        try {
+            var data = imageService.getImageById(imageId);
+            return ResponseEntity.ok(
+                    new ApiResponse("Image fetched successfully", data, true)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse(e.getMessage(), null, false));
+        }
     }
 }
