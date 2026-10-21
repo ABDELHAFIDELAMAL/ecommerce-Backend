@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.dto.UpdateProductDto;
 import com.example.demo.entities.Category;
 import com.example.demo.entities.Image;
 import com.example.demo.entities.Product;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,19 +37,23 @@ public class ProductService implements IProductService{
     @Override
     public Product createProduct(Product product) throws AlReadyExistException {
 
-        Category category = categoryRepository
-                .findByName(product.getCategory().getName())
-                .orElseGet(() -> categoryRepository.save(
-                        new Category(product.getCategory().getName())
-                ));
+        if (product.getCategory() == null || product.getCategory().getName() == null) {
+            throw new IllegalArgumentException("Category name is required");
+        }
+
+        String categoryName = product.getCategory().getName();
+
+        Category category = categoryRepository.findByName(categoryName)
+                .orElseGet(() -> {
+                    Category c = new Category();
+                    c.setName(categoryName);
+                    return categoryRepository.save(c);
+                });
 
         product.setCategory(category);
-
-        for (Product p : productRepository.findAll()) {
-            if (Objects.equals(product.getName(), p.getName())
-                    && Objects.equals(product.getCategory().getId(), p.getCategory().getId())) {
-                throw new AlReadyExistException("Product already exists !!");
-            }
+        product.setReviewsCount(0);
+        if (productRepository.existsByNameAndBrandAndCategoryName(product.getName(), product.getBrand(), product.getCategory().getName())) {
+            throw new AlReadyExistException("Product already exists !!");
         }
 
         return productRepository.save(product);
@@ -60,22 +66,40 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public Product updateProduct(Long productId, Product product) throws NotFoundException {
-        Product newProduct = productRepository.findById(productId)
-                .orElseThrow(()-> new NotFoundException("Product not found with id : " + productId));
-        newProduct.setName(product.getName());
-        newProduct.setCategory(product.getCategory());
-        newProduct.setPrice(product.getPrice());
-        newProduct.setDescription(product.getDescription());
-        newProduct.setQuantity(product.getQuantity());
-        newProduct.setActive(product.getActive());
-        newProduct.setBrand(product.getBrand());
-        newProduct.setImages(product.getImages());
-        newProduct.setReviews(product.getReviews());
-        newProduct.setAverageRating(product.getAverageRating());
-        newProduct.setOrderItems(product.getOrderItems());
-        newProduct.setReviewsCount(product.getReviewsCount());
-        return productRepository.save(newProduct);
+    @Transactional
+    public Product updateProduct(Long productId, Product product) throws NotFoundException, AlReadyExistException {
+
+        Product existing = productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("Product not found with id : " + productId));
+
+        String newName  = product.getName()  != null ? product.getName()  : existing.getName();
+        String newBrand = product.getBrand() != null ? product.getBrand() : existing.getBrand();
+        String categoryName = (product.getCategory() != null && product.getCategory().getName() != null)
+                ? product.getCategory().getName()
+                : existing.getCategory().getName();
+
+        if (productRepository.existsByNameAndBrandAndCategoryName(
+                newName, newBrand, categoryName)) {
+            throw new AlReadyExistException("Product already exists !!");
+        }
+
+        Category category = categoryRepository.findByName(categoryName)
+                .orElseGet(() -> {
+                    Category c = new Category();
+                    c.setName(categoryName);
+                    return categoryRepository.save(c);
+                });
+
+        existing.setName(newName);
+        existing.setBrand(newBrand);
+        existing.setCategory(category);
+
+        if (product.getPrice() != null)       existing.setPrice(product.getPrice());
+        if (product.getQuantity() != null)    existing.setQuantity(product.getQuantity());
+        if (product.getDescription() != null) existing.setDescription(product.getDescription());
+        if (product.getActive() != null)      existing.setActive(product.getActive());
+
+        return productRepository.save(existing);
     }
 
     @Override
@@ -142,4 +166,5 @@ public class ProductService implements IProductService{
                 .orElseThrow(() -> new NotFoundException("Product not found with id : " + productId));
         return product.getReviews();
     }
+
 }
