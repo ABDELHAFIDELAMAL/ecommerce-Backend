@@ -42,7 +42,6 @@ public class CategoryService implements ICategoryService{
                 .orElseThrow(()-> new NotFoundException("Category not found with id " + categoryId));
 
         category1.setName(category.getName());
-        category1.setDescription(category.getDescription());
         category1.setProducts(category.getProducts());
         for(Category category2 : categoryRepository.findAll()){
             if(category2.getName().equals(category1.getName())){
@@ -69,9 +68,7 @@ public class CategoryService implements ICategoryService{
         List<Category> resultsCategories = new ArrayList<>();
 
         for(Category category : categoryRepository.findAll()){
-            if(category.getName().toLowerCase().contains(text.toLowerCase()) ||
-                    category.getDescription().toLowerCase().contains(text.toLowerCase())
-            ){
+            if(category.getName().toLowerCase().contains(text.toLowerCase())){
                resultsCategories.add(category);
             }
         }

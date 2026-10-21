@@ -24,11 +24,8 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
     @OneToMany(mappedBy = "category")
-    @Builder.Default
+    @JsonIgnore
     private List<Product> products = new ArrayList<>();
 
     public Category(String name) {

@@ -13,7 +13,7 @@ public interface IProductService {
     List<Product> getAllProducts();
     Product createProduct(Product product) throws AlReadyExistException;
     Product getProductById(Long productId ) throws NotFoundException;
-    Product updateProduct(Long productId , Product product) throws NotFoundException;
+    Product updateProduct(Long productId , Product product) throws NotFoundException, AlReadyExistException;
     void deleteProduct(Long productId) throws NotFoundException;
     List<Product> searchProducts(String text);
     List<Product> getProductsByCategory(Long categoryId) throws NotFoundException;
