@@ -9,16 +9,9 @@ import java.util.List;
 public interface IUserService {
 
     User createUser(User user) throws AlReadyExistException;
-
-    List<User> getAllUsers();
-
-    User getUserById(Long userId);
-
+    User getUserById(Long id);
     User getUserByEmail(String email);
-
-    User updateUser(Long userId, User user);
-
-    void deleteUser(Long userId);
-
-    boolean existsByEmail(String email);
+    List<User> getAllUsers();
+    User updateUser(Long id, User user);
+    void deleteUser(Long id);
 }
