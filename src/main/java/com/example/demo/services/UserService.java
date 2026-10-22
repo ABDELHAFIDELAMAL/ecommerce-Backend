@@ -71,10 +71,6 @@ public class UserService implements IUserService {
         userRepository.delete(user);
     }
 
-    @Override
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email.trim().toLowerCase());
-    }
 
     @Override
     @Transactional

@@ -8,11 +8,17 @@ public interface IAddressService {
 
     Address createAddress(Address address);
 
+    Address getAddressById(Long id);
+
     List<Address> getAllAddresses();
 
-    Address getAddressById(Long addressId);
+    List<Address> getAddressesByUserId(Long userId);
 
-    Address updateAddress(Long addressId, Address address);
+    Address updateAddress(Long id, Address address);
 
-    void deleteAddress(Long addressId);
+    void deleteAddress(Long id);
+
+    Address getDefaultAddressByUserId(Long userId);
+
+    Address setDefaultAddress(Long addressId);
 }

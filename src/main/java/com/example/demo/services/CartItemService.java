@@ -1,10 +1,10 @@
 package com.example.demo.services;
 
+import com.example.demo.entities.Cart;
 import com.example.demo.entities.CartItem;
 import com.example.demo.repositories.CartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -14,40 +14,42 @@ public class CartItemService implements ICartItemService {
     private CartItemRepository cartItemRepository;
 
     @Override
-    public CartItem createCartItem(CartItem cartItem) {
-        return cartItemRepository.save(cartItem);
+    public CartItem addToCart(Long cartId, Long productId, int quantity) {
+        return null;
     }
 
     @Override
     public List<CartItem> getAllCartItems() {
-        return cartItemRepository.findAll();
+        return List.of();
     }
 
     @Override
     public CartItem getCartItemById(Long cartItemId) {
-        return cartItemRepository.findById(cartItemId)
-                .orElseThrow(() ->
-                        new RuntimeException(
-                                "CartItem not found with id: " + cartItemId
-                        )
-                );
+        return null;
+    }
+
+    @Override
+    public List<CartItem> getCartItemsByCartId(Long cartId) {
+        return List.of();
     }
 
     @Override
     public CartItem updateCartItem(Long cartItemId, CartItem cartItem) {
+        return null;
+    }
 
-        CartItem existingCartItem = getCartItemById(cartItemId);
+    @Override
+    public void clearCartItems(Long cartId) {
 
-        existingCartItem.setQuantity(cartItem.getQuantity());
-
-        return cartItemRepository.save(existingCartItem);
     }
 
     @Override
     public void deleteCartItem(Long cartItemId) {
 
-        CartItem cartItem = getCartItemById(cartItemId);
+    }
 
-        cartItemRepository.delete(cartItem);
+    @Override
+    public Cart getCartItemByCartAndProduct(Long cartId, Long productId) {
+        return null;
     }
 }
