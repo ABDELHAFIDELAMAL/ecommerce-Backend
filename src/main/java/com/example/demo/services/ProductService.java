@@ -1,8 +1,7 @@
 package com.example.demo.services;
 
-import com.example.demo.dto.UpdateProductDto;
+
 import com.example.demo.entities.Category;
-import com.example.demo.entities.Image;
 import com.example.demo.entities.Product;
 import com.example.demo.entities.Review;
 import com.example.demo.exceptions.AlReadyExistException;
@@ -15,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @Transactional

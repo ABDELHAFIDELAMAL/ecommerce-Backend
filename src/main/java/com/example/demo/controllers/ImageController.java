@@ -59,4 +59,18 @@ public class ImageController {
                     .body(new ApiResponse(e.getMessage(), null, false));
         }
     }
+
+
+    @DeleteMapping("/delete/{imageId}")
+    public ResponseEntity<ApiResponse> deleteImage(@PathVariable Long imageId) {
+        try {
+            imageService.deleteImage(imageId);
+            return ResponseEntity.ok(
+                    new ApiResponse("Image deleted successfully", null, true)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse(e.getMessage(), null, false));
+        }
+    }
 }

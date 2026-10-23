@@ -2,11 +2,12 @@ package com.example.demo.services;
 
 import com.example.demo.entities.Cart;
 import com.example.demo.entities.CartItem;
+import com.example.demo.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface ICartItemService {
-    CartItem addToCart(Long cartId , Long productId , int quantity);
+    Cart addToCart(Long cartId , Long productId , int quantity) throws NotFoundException;
     List<CartItem> getAllCartItems();
     CartItem getCartItemById(Long cartItemId);
     List<CartItem> getCartItemsByCartId(Long cartId);

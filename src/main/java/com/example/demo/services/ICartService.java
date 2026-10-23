@@ -1,16 +1,17 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.Cart;
+import com.example.demo.exceptions.NotFoundException;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface ICartService {
     List<Cart> getAllCarts();
-    Cart createCart(Cart cart);
-    Cart getCartById(Long cartId);
-    Cart getCartByUserId(Long userId);
-    BigDecimal getCartTotal(Long cartId);
-    void clearCart(Long cartId);
+    Cart createCart(Long userId) throws NotFoundException;
+    Cart getCartById(Long cartId) throws NotFoundException;
+    Cart getCartByUserId(Long userId) throws NotFoundException;
+    Double getCartTotal(Long cartId) throws NotFoundException;
+    void clearCart(Long cartId) throws NotFoundException;
     Cart getOrCreateCart(Long userId);
 }

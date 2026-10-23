@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -89,15 +89,16 @@ public class ImageService implements IImageService{
 
 
     @Override
-    public void deleteImage(Long imageId) throws NotFoundException {
+    public void deleteImage(Long imageId) throws NotFoundException, IOException {
         Image image = imageRepository.findById(imageId)
                 .orElseThrow(() -> new NotFoundException("Image not exist with id : " + imageId));
+        Path uploadPath = Paths.get("uploads").toAbsolutePath().normalize();
+        String fileName = Paths.get(image.getFileName()).getFileName().toString();
+        Path imagePath = uploadPath.resolve(fileName).normalize();
+        if(imagePath.startsWith(uploadPath)){
+            Files.deleteIfExists(imagePath);
+        }
         imageRepository.deleteById(imageId);
-    }
-
-    @Override
-    public Image getImagesByProduct(Long productId) {
-        return (Image) Collections.singletonList(imageRepository.findById(productId).orElseThrow(() -> new RuntimeException("Eror")));
     }
 
 
