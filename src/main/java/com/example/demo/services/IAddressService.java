@@ -18,7 +18,4 @@ public interface IAddressService {
 
     void deleteAddress(Long id);
 
-    Address getDefaultAddressByUserId(Long userId);
-
-    Address setDefaultAddress(Long addressId);
 }

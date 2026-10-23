@@ -4,11 +4,9 @@ import com.example.demo.entities.Review;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service

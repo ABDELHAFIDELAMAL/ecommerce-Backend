@@ -24,6 +24,8 @@ public class Cart {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    private Double totalPrice = 0.0 ;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "user_id",
@@ -45,5 +47,9 @@ public class Cart {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }
+    }
+
+    public boolean addCartItem(CartItem cartItem){
+        return cartItems.add(cartItem);
     }
 }

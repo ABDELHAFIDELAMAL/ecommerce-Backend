@@ -1,6 +1,8 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity
@@ -20,8 +22,11 @@ public class CartItem {
     @Column(nullable = false)
     private Integer quantity;
 
+    @Min(0)
+    private Double unitPrice ;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id", nullable = false)
+    @JsonIgnore
     private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)

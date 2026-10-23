@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.Payment;
+import com.example.demo.enums.PaymentStatus;
 
 import java.util.List;
 
@@ -9,7 +10,8 @@ public interface IPaymentService {
     Payment getPaymentById(Long id);
     List<Payment> getAllPayments();
     Payment getPaymentByOrderId(Long orderId);
-    List<Payment> getPaymentsByStatus(String status);
-    Payment updatePaymentStatus(Long id, String status);
+    List<Payment> getPaymentsByStatus(PaymentStatus status);
+
+    Payment updatePaymentStatus(Long id, PaymentStatus status);
     void deletePayment(Long id);
 }
