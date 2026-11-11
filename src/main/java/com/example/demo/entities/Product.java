@@ -75,4 +75,7 @@ public class Product {
     )
     @Builder.Default
     private List<Review> reviews = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "products")
+    private List<Promotion> promotions = new ArrayList<>();
 }

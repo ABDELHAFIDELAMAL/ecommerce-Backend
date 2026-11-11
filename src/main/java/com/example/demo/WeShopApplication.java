@@ -20,12 +20,8 @@ public class WeShopApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner (
-			ProductService productService ,
-			CategoryRepository categoryRepository
-	){
+	public CommandLineRunner commandLineRunner (){
 		return start->{
-
 
 		};
 	}
