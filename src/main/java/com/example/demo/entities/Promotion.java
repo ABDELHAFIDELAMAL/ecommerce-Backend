@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.example.demo.enums.DiscountType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,15 @@ public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
+    private String name ;
+
+    @Column(length = 1000)
+    private String description ;
+
     private Double discountValue ;
+
+    @Enumerated(EnumType.STRING)
+    private DiscountType discountType ;
     private LocalDateTime startDate ;
     private LocalDateTime endDate ;
     private Boolean active ;
