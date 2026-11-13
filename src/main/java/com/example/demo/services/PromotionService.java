@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -118,6 +119,16 @@ public class PromotionService implements IPromotionService {
 
     @Override
     public List<Promotion> getPromotionsActive() {
-        return promotionRepository.findActivePromotions();
+
+        List<Promotion> promotions = promotionRepository.findAll();
+        List<Promotion> activePromotions = new ArrayList<>();
+
+        for (Promotion promo : promotions) {
+            if (Boolean.TRUE.equals(promo.getActive())) {
+                activePromotions.add(promo);
+            }
+        }
+
+        return activePromotions;
     }
 }
