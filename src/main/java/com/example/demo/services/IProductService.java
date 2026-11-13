@@ -21,4 +21,6 @@ public interface IProductService {
     List<Product> getTopRatedProducts();
     void updateQuantity(Long productId , Integer quantity) throws NotFoundException;
     List<Review> getProductReviews(Long productId) throws NotFoundException;
+    Product applyPromotionToProduct(Long productId, Long promotionId) throws NotFoundException, AlReadyExistException;
+    Double calculateDiscountedPrice(Long productId, Long promotionId) throws NotFoundException;
 }

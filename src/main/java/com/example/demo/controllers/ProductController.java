@@ -166,4 +166,33 @@ public class ProductController {
                     .body(new ApiResponse(e.getMessage(), null, false));
         }
     }
+
+    @PostMapping("/{productId}/promotions/{promotionId}")
+    public ResponseEntity<ApiResponse> applyPromotion(@PathVariable Long productId, @PathVariable Long promotionId) {
+        try {
+            var data = productService.applyPromotionToProduct(productId, promotionId);
+            return ResponseEntity.ok(
+                    new ApiResponse("Promotion applied successfully", data, true)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse(e.getMessage(), null, false));
+        }
+    }
+
+    @GetMapping("/{productId}/promotions/{promotionId}/discounted-price")
+    public ResponseEntity<ApiResponse> calculateDiscountedPrice(@PathVariable Long productId, @PathVariable Long promotionId) {
+
+        try {
+            Double data = productService.calculateDiscountedPrice(productId, promotionId);
+
+            return ResponseEntity.ok(
+                    new ApiResponse("Discounted price calculated successfully", data, true)
+            );
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse(e.getMessage(), null, false));
+        }
+    }
 }
